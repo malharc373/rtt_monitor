@@ -1,0 +1,3 @@
+category,Samples,Mean_ms,Std_ms,Min_ms,P50_ms,P90_ms,P95_ms,Max_ms
+HTTPS / Remote (Port 443),240,30.442,79.827,0.016,0.211,64.088,289.061,431.096
+Unknown TCP,7,7.817,17.281,0.05,0.105,23.179,34.833,46.487

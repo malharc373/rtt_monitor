@@ -1,0 +1,3 @@
+category,Total Samples,Spikes Detected,Spike Rate (%)
+HTTPS / Remote (Port 443),240.0,25.0,10.42
+Unknown TCP,7.0,1.0,14.29
