@@ -1,37 +1,63 @@
-# RTT Live Monitor
+# RTT Monitor — CN Mini Project
 
-A Python tool to capture and analyse TCP Round-Trip Time (RTT) in real time by sniffing packets on a network interface using Scapy.
+A passive TCP Round-Trip Time (RTT) monitoring tool using Python and Scapy.
+Measures per-flow latency by matching SYN/SYN-ACK pairs — no probe packets, no firewall issues.
 
-## Features
-- Live packet sniffing on any interface (e.g. en0)
-- Per-category RTT stats: Mean, P50, P90, P95, Max
-- Auto-saves output/rtt_live.csv and output/rtt_analysis.png
-- Offline mode for analysing a pre-captured .pcap file
+---
 
-## Requirements
-- Python 3.10+, macOS/Linux
-- Run with sudo (raw socket access required)
+## Versions
 
-Install dependencies:
-    pip install -r requirements.txt
+### v1 — Baseline Live Monitor
+- First working implementation
+- Detects 3 traffic categories: LAN (Wired), Campus WiFi, Remote Internet
+- Basic spike detection using 2.5x median threshold
+- Result: 2,243 samples | LAN: 1.4ms mean | WiFi: 15ms mean | Remote: 66ms mean
+
+### v2 — Offline pcap Analysis
+- Added offline mode to analyse pre-captured .pcap files
+- Dual RTT measurement: SYN-ACK handshake + DATA-ACK method for better coverage
+- Result: 247 samples | HTTPS P50: 0.2ms | Max: 431ms | Spike rate: 10.4%
+
+### v3 — Configurable Live Monitor (Final Version)
+- Fully configurable via --interval and --duration flags
+- Live per-window stats table printed every N seconds during capture
+- Fixed P95_ms column missing in live aggregation path
+- Result: 176 samples | HTTPS P50 < 1ms | P90 < 11ms | 60s session
+
+---
 
 ## Usage
 
-Live mode (60s capture, 5s intervals):
+Live mode (v3 — recommended):
+    cd v3
     sudo python3 projectv3.py --live --interval 5 --duration 60
 
-Offline mode:
-    sudo python3 projectv3.py --pcap path/to/file.pcap
+Offline pcap mode (v2):
+    cd v2
+    sudo python3 projectv2.py
 
-## Output
-- output/rtt_live.csv      Per-flow RTT samples
-- output/rtt_analysis.png  Multi-panel RTT analysis chart
+Live mode (v1):
+    cd v1
+    sudo python3 projectv1.py --live --interval 5 --duration 60
 
-## Project Structure
-    rtt_project/
-    |-- projectv3.py
-    |-- requirements.txt
-    |-- output/            (gitignored)
+## Install Dependencies
+    pip install -r requirements.txt
+
+Requires sudo for raw socket access on macOS/Linux.
+
+## Repository Structure
+    rtt_monitor/
+    |-- v1/
+    |   |-- projectv1.py       Baseline live monitor
+    |   |-- output/            CSV + PNG results
+    |-- v2/
+    |   |-- projectv2.py       Offline pcap analyser
+    |   |-- output/            CSV + PNG results
+    |-- v3/
+    |   |-- projectv3.py       Final configurable live monitor
+    |   |-- output/            CSV + PNG results
     |-- README.md
+    |-- requirements.txt
+    |-- .gitignore
 
-## CN Mini Project - TY SEM VI
+## CN Mini Project | TY SEM VI | April 2026
