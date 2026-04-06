@@ -3,3 +3,8 @@ __pycache__/
 *.pyo
 .DS_Store
 .venv/
+
+real/
+__pycache__/
+.venv/
+.DS_Store
